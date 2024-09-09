@@ -1,9 +1,10 @@
 import React from 'react'
+import Header from '../components/Header.jsx'
 
 export default function Main() {
   return (
     <div>
-      hellu from main page
+      <Header />
     </div>
   )
 }

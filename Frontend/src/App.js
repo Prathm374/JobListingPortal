@@ -6,6 +6,7 @@ import MainPage from './pages/Main.jsx';
 // import ContactPage from './pages/ContactPage.jsx';
 import LoginPage from './pages/Login.jsx';
 // import SignupPage from './pages/SignupPage.jsx';
+import './App.css';
 
 function App() {
   return (

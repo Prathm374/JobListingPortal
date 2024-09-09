@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
+
+:root {
+    --foreground-color: #4a4a4a; /* Dark Gray for text */
+    --background-color: #ffffff; /* Pure White */
+    --accent-color: #add8e6; /* Light Blue Accent */
+    --soft-gray: #f0f0f0; /* Soft Gray */
+    --mid-gray: #e0e0e0; /* Light Silver */
+    --dark-gray: #c8c8c8; /* Cool Gray */
+}
+
+.logNav {
+    width: 100%;
+    margin-inline: 0;
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    background: linear-gradient(var(--soft-gray), var(--mid-gray));
+    position: fixed;
+    top: 0;
+    box-shadow: 0rem 1rem 1rem -0.5rem var(--dark-gray);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.logNav > p {
+    margin-block: auto;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: black;
+    position: relative;
+}
+
+.logNavLogo {
+    margin-inline: 3% 1%;
+    position: relative;
+}
+
+.logNavLogo img {
+    height: 3rem;
+    width: 3rem;
+}
+
+.navItems {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 45%;
+    left: 60%;
+    position: absolute;
+    transform: translate(-55%);
+}
+.navItems p {
+    margin-block: auto;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: black;
+    position: relative;
+}
+
+.navItems p:hover{
+  color: white;
+  border-bottom: 2px solid var(--foreground-color);
+  transform: translateY(-10%);
+}
+
+a {
+    text-decoration: none;
+}
+
+.navBtns {
+    margin-right: 3%;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 12%;
+}
+
+/* Glassmorphism effect for buttons with shiny line effect */
+.glassButton {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: var(--foreground-color);
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    border-radius: 0.5rem;
+    box-shadow: 0px 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: transform 300ms ease-out, background-color 500ms ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.glassButton::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-135deg);
+    transition: left 500ms ease-out;
+}
+
+.glassButton:hover {
+    transform: translateY(-15%);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.glassButton:hover::before {
+    left: 100%;
+}
