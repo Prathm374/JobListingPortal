@@ -17,6 +17,7 @@
     height: 4rem;
     background: linear-gradient(var(--soft-gray), var(--mid-gray));
     position: fixed;
+    z-index: 1;
     top: 0;
     box-shadow: 0rem 1rem 1rem -0.5rem var(--dark-gray);
     border: 1px solid rgba(255, 255, 255, 0.3);
