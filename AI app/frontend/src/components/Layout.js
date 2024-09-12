@@ -1,19 +1,35 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Button from './ui/Button';
 
 const Layout = ({ children }) => {
+  const navigate = useNavigate();
+  const isAuthenticated = !!localStorage.getItem('token');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <header className="bg-white shadow-md">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold text-primary">JobPortal</Link>
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-primary text-white p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link to="/" className="text-2xl font-bold">Job Portal</Link>
           <nav>
             <ul className="flex space-x-4">
-              <li><Link to="/jobs" className="text-text hover:text-primary">Jobs</Link></li>
-              <li><Link to="/dashboard" className="text-text hover:text-primary">Dashboard</Link></li>
-              <li><Link to="/profile" className="text-text hover:text-primary">Profile</Link></li>
-              <li><Link to="/about" className="text-text hover:text-primary">About</Link></li>
-              <li><Link to="/support" className="text-text hover:text-primary">Support</Link></li>
+              <li><Link to="/jobs" className="hover:underline">Jobs</Link></li>
+              <li><Link to="/about" className="hover:underline">About</Link></li>
+              <li><Link to="/support" className="hover:underline">Support</Link></li>
+              {isAuthenticated ? (
+                <>
+                  <li><Link to="/dashboard" className="hover:underline">Dashboard</Link></li>
+                  <li><Link to="/profile" className="hover:underline">Profile</Link></li>
+                  <li><Button onClick={handleLogout} variant="outline">Logout</Button></li>
+                </>
+              ) : (
+                <li><Link to="/" className="hover:underline">Login</Link></li>
+              )}
             </ul>
           </nav>
         </div>
@@ -21,9 +37,9 @@ const Layout = ({ children }) => {
       <main className="flex-grow container mx-auto px-4 py-8">
         {children}
       </main>
-      <footer className="bg-white border-t border-gray-200">
-        <div className="container mx-auto px-4 py-6 text-center text-text">
-          &copy; 2023 JobPortal. All rights reserved.
+      <footer className="bg-gray-200 p-4">
+        <div className="container mx-auto text-center">
+          © 2023 Job Portal. All rights reserved.
         </div>
       </footer>
     </div>

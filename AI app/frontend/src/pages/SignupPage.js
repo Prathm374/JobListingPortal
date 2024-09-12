@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Input from '../components/ui/Input';
+import api from '../utils/api';
 
 const SignupPage = () => {
   const [firstName, setFirstName] = useState('');
@@ -11,14 +12,32 @@ const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('job_seeker');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    // Here you would typically handle the signup logic
-    console.log('Signup attempted with:', { firstName, lastName, email, password });
-    // For now, let's just navigate to the dashboard
-    navigate('/dashboard');
+    setError('');
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await api.post('/auth/register', {
+        name: `${firstName} ${lastName}`,
+        email,
+        password,
+        role,
+      });
+
+      localStorage.setItem('token', response.data.token);
+      navigate('/dashboard');
+    } catch (error) {
+      setError(error.response?.data?.message || 'An error occurred during signup');
+    }
   };
 
   return (
@@ -70,6 +89,18 @@ const SignupPage = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+                >
+                  <option value="job_seeker">Job Seeker</option>
+                  <option value="employer">Employer</option>
+                </select>
+              </div>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button type="submit" className="w-full">Sign Up</Button>
             </form>
             <p className="mt-4 text-center text-sm text-gray-600">
