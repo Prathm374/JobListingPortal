@@ -1,28 +1,31 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MainPage from './pages/Main.jsx';
-// import AboutPage from './pages/AboutPage.jsx';
-// import Whoop404 from './pages/Whoop404.jsx';
-// import ServicesPage from './pages/ServicesPage.jsx';
-// import ContactPage from './pages/ContactPage.jsx';
-import LoginPage from './pages/Login.jsx';
-// import SignupPage from './pages/SignupPage.jsx';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import JobsPage from './pages/JobsPage';
+import JobDetailsPage from './pages/JobDetailsPage';
+import CreateJobForm from './components/CreateJobForm';
+import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/ProfilePage';
+import AboutPage from './pages/AboutPage';
+import SupportPage from './pages/SupportPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<LoginPage />} />
-          {/* <Route path='/signup' element={<SignupPage />} /> */}
-          <Route path='/home' element={<MainPage />} />
-          {/* <Route path='/about' element={<AboutPage />} />
-          <Route path='/service' element={<ServicesPage />} />    
-          <Route path='/contact' element={<ContactPage />} />
-          <Route path='*' element={<Whoop404 />} /> */}
-        </Routes>
-      </BrowserRouter>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/jobs" element={<JobsPage />} />
+        <Route path="/job/:id" element={<JobDetailsPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/support" element={<SupportPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/create-job" element={<CreateJobForm />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
