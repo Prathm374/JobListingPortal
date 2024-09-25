@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import JobsPage from './pages/JobsPage';
 import JobDetailsPage from './pages/JobDetailsPage';
+import CreateJobForm from './components/CreateJobForm';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import AboutPage from './pages/AboutPage';
@@ -21,6 +22,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/create-job" element={<CreateJobForm />} />
         </Route>
       </Routes>
     </Router>

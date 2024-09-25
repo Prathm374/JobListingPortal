@@ -1,89 +1,112 @@
 const Job = require('../models/Job');
+const Application = require('../models/Application');
 
-// @desc    Get all jobs
-// @route   GET /api/jobs
-// @access  Public
+// Get all jobs
 exports.getJobs = async (req, res) => {
   try {
-    const jobs = await Job.find();
+    const jobs = await Job.find({});
     res.json(jobs);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server Error' });
   }
 };
 
-// @desc    Get single job
-// @route   GET /api/jobs/:id
-// @access  Public
-exports.getJob = async (req, res) => {
+// Get a single job by ID
+exports.getJobById = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
-    if (!job) {
-      return res.status(404).json({ message: 'Job not found' });
+    if (job) {
+      res.json(job);
+    } else {
+      res.status(404).json({ message: 'Job not found' });
     }
-    res.json(job);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server Error' });
   }
 };
 
-// @desc    Create new job
-// @route   POST /api/jobs
-// @access  Private
+// Create a new job
 exports.createJob = async (req, res) => {
   try {
-    req.body.postedBy = req.user.id;
-    const job = await Job.create(req.body);
-    res.status(201).json(job);
+    const job = new Job({
+      ...req.body,
+      postedBy: req.user._id
+    });
+    const createdJob = await job.save();
+    res.status(201).json(createdJob);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(400).json({ message: 'Invalid job data' });
   }
 };
 
-// @desc    Update job
-// @route   PUT /api/jobs/:id
-// @access  Private
+// Update a job
 exports.updateJob = async (req, res) => {
   try {
-    let job = await Job.findById(req.params.id);
-    if (!job) {
-      return res.status(404).json({ message: 'Job not found' });
+    const job = await Job.findById(req.params.id);
+    if (job) {
+      if (job.postedBy.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: 'Not authorized to update this job' });
+      }
+      Object.assign(job, req.body);
+      const updatedJob = await job.save();
+      res.json(updatedJob);
+    } else {
+      res.status(404).json({ message: 'Job not found' });
     }
-
-    // Make sure user is job owner
-    if (job.postedBy.toString() !== req.user.id && req.user.role !== 'admin') {
-      return res.status(401).json({ message: 'Not authorized to update this job' });
-    }
-
-    job = await Job.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    res.json(job);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(400).json({ message: 'Invalid job data' });
   }
 };
 
-// @desc    Delete job
-// @route   DELETE /api/jobs/:id
-// @access  Private
+// Delete a job
 exports.deleteJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
+    if (job) {
+      if (job.postedBy.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: 'Not authorized to delete this job' });
+      }
+      await job.remove();
+      res.json({ message: 'Job removed' });
+    } else {
+      res.status(404).json({ message: 'Job not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Apply for a job
+exports.applyForJob = async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
     if (!job) {
       return res.status(404).json({ message: 'Job not found' });
     }
 
-    // Make sure user is job owner
-    if (job.postedBy.toString() !== req.user.id && req.user.role !== 'admin') {
-      return res.status(401).json({ message: 'Not authorized to delete this job' });
+    const alreadyApplied = await Application.findOne({
+      job: job._id,
+      applicant: req.user._id
+    });
+
+    if (alreadyApplied) {
+      return res.status(400).json({ message: 'You have already applied for this job' });
     }
 
-    await job.remove();
-    res.json({ message: 'Job removed' });
+    const application = new Application({
+      job: job._id,
+      applicant: req.user._id,
+      coverLetter: req.body.coverLetter
+    });
+
+    await application.save();
+
+    job.applications.push(application._id);
+    await job.save();
+
+    res.status(201).json({ message: 'Application submitted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };

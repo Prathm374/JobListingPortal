@@ -1,10 +1,24 @@
 const express = require('express');
-const { getJobs, getJob, createJob, updateJob, deleteJob } = require('../controllers/jobController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { protect } = require('../middleware/authMiddleware');
+const {
+  getJobs,
+  getJobById,
+  createJob,
+  updateJob,
+  deleteJob,
+  applyForJob
+} = require('../controllers/jobController');
 
 const router = express.Router();
 
-router.route('/').get(getJobs).post(protect, authorize('employer', 'admin'), createJob);
-router.route('/:id').get(getJob).put(protect, authorize('employer', 'admin'), updateJob).delete(protect, authorize('employer', 'admin'), deleteJob);
+// Public routes
+router.get('/', getJobs);
+router.get('/:id', getJobById);
+
+// Protected routes
+router.post('/', protect, createJob);
+router.put('/:id', protect, updateJob);
+router.delete('/:id', protect, deleteJob);
+router.post('/:id/apply', protect, applyForJob);
 
 module.exports = router;

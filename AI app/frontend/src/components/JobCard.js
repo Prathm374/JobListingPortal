@@ -6,17 +6,21 @@ import Button from './ui/Button';
 const JobCard = ({ job }) => {
   return (
     <Card className="mb-4">
+      <Card.Header>
+        <h2 className="text-xl font-semibold text-primary">{job.title}</h2>
+        <p className="text-gray-600">{job.company}</p>
+      </Card.Header>
       <Card.Content>
-        <h3 className="text-xl font-semibold text-primary mb-2">{job.title}</h3>
-        <p className="text-gray-600 mb-2">{job.company}</p>
-        <p className="text-gray-500 mb-2">{job.location}</p>
-        <p className="text-sm text-gray-700 mb-4">{job.description.substring(0, 150)}...</p>
-        <div className="flex justify-between items-center">
-          <span className="text-sm font-medium text-gray-500">Posted on: {new Date(job.postedDate).toLocaleDateString()}</span>
-          <Link to={`/job/${job.id}`}>
-            <Button variant="outline">View Details</Button>
-          </Link>
-        </div>
+        <p className="text-gray-700 mb-2">{job.location}</p>
+        <p className="text-gray-700 mb-2">Salary: {job.salary}</p>
+        <p className="text-gray-700 mb-2">Job Type: {job.jobType}</p>
+        <p className="text-gray-700 mb-2">Experience Level: {job.experienceLevel}</p>
+        <p className="text-gray-700 mb-4">
+          Application Deadline: {new Date(job.applicationDeadline).toLocaleDateString()}
+        </p>
+        <Link to={`/job/${job._id}`}>
+          <Button>View Details</Button>
+        </Link>
       </Card.Content>
     </Card>
   );

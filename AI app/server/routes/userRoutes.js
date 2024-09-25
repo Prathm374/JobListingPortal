@@ -23,7 +23,7 @@ const upload = multer({
     }
     cb(null, true);
   },
-  limits: { fileSize: 1024 * 1024 * 5 } // 5MB limit
+  limits: { fileSize: 1024 * 1024 * 5 } // 5MB file size limit
 });
 
 router.post('/upload-resume', protect, upload.single('resume'), uploadResume);

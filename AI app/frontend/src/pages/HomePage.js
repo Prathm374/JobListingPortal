@@ -36,7 +36,7 @@ export default function HomePage() {
     <Layout>
       <div className="flex flex-col md:flex-row items-center justify-between min-h-screen bg-gray-100">
         <div className="w-full md:w-1/2 p-8">
-          <h1 className="text-4xl font-bold text-primary mb-4">Welcome to Job Portal</h1>
+          <h1 className="text-4xl font-bold text-primary mb-4">Welcome to JobConnect</h1>
           <p className="text-xl text-gray-600 mb-6">
             Find your dream job or hire the perfect candidate. Our platform connects talented professionals with exciting opportunities.
           </p>
