@@ -25,12 +25,12 @@ exports.getJobById = async (req, res) => {
   }
 };
 
-// Create a new job
 exports.createJob = async (req, res) => {
   try {
     const job = new Job({
       ...req.body,
-      postedBy: req.user._id
+      postedBy: req.user._id,
+      applications: []  // Initialize with an empty array
     });
     const createdJob = await job.save();
     res.status(201).json(createdJob);
@@ -76,7 +76,6 @@ exports.deleteJob = async (req, res) => {
   }
 };
 
-// Apply for a job
 exports.applyForJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
@@ -100,6 +99,11 @@ exports.applyForJob = async (req, res) => {
     });
 
     await application.save();
+
+    // Initialize applications array if it doesn't exist
+    if (!job.applications) {
+      job.applications = [];
+    }
 
     job.applications.push(application._id);
     await job.save();

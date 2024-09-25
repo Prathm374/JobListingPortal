@@ -1,59 +1,53 @@
 const mongoose = require('mongoose');
 
-const JobSchema = new mongoose.Schema({
+const jobSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, 'Please add a title'],
-    trim: true,
-    maxlength: [50, 'Title can not be more than 50 characters']
+    required: true
   },
   company: {
     type: String,
-    required: [true, 'Please add a company name'],
-    trim: true,
-    maxlength: [50, 'Company name can not be more than 50 characters']
+    required: true
   },
   location: {
     type: String,
-    required: [true, 'Please add a location'],
-    trim: true
+    required: true
   },
   description: {
     type: String,
-    required: [true, 'Please add a description'],
-    maxlength: [500, 'Description can not be more than 500 characters']
+    required: true
   },
   requirements: {
     type: [String],
-    required: [true, 'Please add at least one requirement']
+    required: true
   },
   salary: {
     type: String,
-    required: [true, 'Please add a salary range']
+    required: true
   },
   jobType: {
     type: String,
-    required: [true, 'Please add a job type'],
-    enum: ['Full-time', 'Part-time', 'Contract', 'Internship']
+    required: true
   },
   experienceLevel: {
     type: String,
-    required: [true, 'Please add an experience level'],
-    enum: ['Entry-level', 'Mid-level', 'Senior', 'Executive']
+    required: true
   },
   applicationDeadline: {
     type: Date,
-    required: [true, 'Please add an application deadline']
+    required: true
   },
   postedBy: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  applications: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }],
+    default: []  // Initialize as an empty array by default
   }
+}, {
+  timestamps: true
 });
 
-module.exports = mongoose.model('Job', JobSchema);
+module.exports = mongoose.model('Job', jobSchema);

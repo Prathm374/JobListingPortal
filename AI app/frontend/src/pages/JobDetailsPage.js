@@ -50,30 +50,22 @@ const JobDetailsPage = () => {
           </Card.Header>
           <Card.Content>
             <div className="mb-4">
-              <span className="inline-block bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
-                {job.jobType}
-              </span>
-              <span className="inline-block bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
-                {job.salary}
-              </span>
-              <span className="inline-block bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
-                {job.experienceLevel}
-              </span>
+              <h2 className="text-2xl font-semibold text-primary mb-2">Job Description</h2>
+              <p className="text-gray-700">{job.description}</p>
             </div>
-            <h2 className="text-2xl font-semibold text-primary mb-2">Job Description</h2>
-            <p className="text-gray-700 mb-4">{job.description}</p>
-            <h2 className="text-2xl font-semibold text-primary mb-2">Requirements</h2>
-            <ul className="list-disc list-inside mb-4">
-              {job.requirements.map((req, index) => (
-                <li key={index} className="text-gray-700">{req}</li>
-              ))}
-            </ul>
-            <p className="text-sm text-gray-500 mb-4">
-              Posted on: {new Date(job.createdAt).toLocaleDateString()}
-            </p>
-            <p className="text-sm text-gray-500 mb-4">
-              Application Deadline: {new Date(job.applicationDeadline).toLocaleDateString()}
-            </p>
+            <div className="mb-4">
+              <h2 className="text-2xl font-semibold text-primary mb-2">Requirements</h2>
+              <ul className="list-disc list-inside text-gray-700">
+                {job.requirements.map((req, index) => (
+                  <li key={index}>{req}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="mb-4">
+              <p className="text-gray-600">Salary: {job.salary}</p>
+              <p className="text-gray-600">Job Type: {job.jobType}</p>
+              <p className="text-gray-600">Experience Level: {job.experienceLevel}</p>
+            </div>
             <h2 className="text-2xl font-semibold text-primary mb-2">Apply for this job</h2>
             <form onSubmit={handleApply}>
               <textarea
@@ -93,4 +85,4 @@ const JobDetailsPage = () => {
   );
 };
 
-export default JobDetailsPage;            
+export default JobDetailsPage;

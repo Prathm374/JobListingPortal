@@ -38,6 +38,9 @@ const ProfilePage = () => {
         },
       });
       setUploadStatus(response.data.message);
+      // Refresh user data to show updated resume status
+      const userResponse = await api.get('/users/profile');
+      setUser(userResponse.data);
     } catch (error) {
       console.error('Error uploading resume:', error);
       setUploadStatus(error.response?.data?.message || 'Error uploading resume. Please try again.');

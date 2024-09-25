@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const { protect } = require('../middleware/authMiddleware');
-const { uploadResume, getUserProfile } = require('../controllers/userController');
+const { uploadResume, getUserProfile, getDashboardData } = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -26,6 +26,7 @@ const upload = multer({
   limits: { fileSize: 1024 * 1024 * 5 } // 5MB file size limit
 });
 
+router.get('/dashboard', protect, getDashboardData);
 router.post('/upload-resume', protect, upload.single('resume'), uploadResume);
 router.get('/profile', protect, getUserProfile);
 
